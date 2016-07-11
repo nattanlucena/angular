@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="BeMEAN">
+<head>
+    <meta charset="UTF-8">
+    <title>{{titulo}}</title>
+</head>
+<body >
+    <div data-ng-controller="UserController as User">
+        <h1>{{User.titulo}}</h1>
+
+        <ul>
+            <li data-ng-repeat="user in User.users">
+                {{user.nome}} - {{user.idade}}
+            </li>
+        </ul>
+   </div>
+    <div data-ng-controller="CourseController as Course">
+        <h1>{{Course.titulo}}</h1>
+
+        <ul>
+            <li data-ng-repeat="course in Course.courses">
+                {{course.curso}} - {{course.teacher}}
+            </li>
+        </ul>
+    </div>
+    <script src="libs/angular.min.js"></script>
+    <script>
+        //o primeiro parâmetro é o ng-app e o segundo são as dependências
+        angular.module('BeMEAN', [])
+                .filter('reverseString', function(){
+                    return function (text) {
+                        if (text) {
+                            return text.split("").reverse().join("");
+                        }
+                    }
+                })
+                .filter('truncate', function () {
+                    return function (text, length, end) {
+                        if (text) {
+                            if (isNaN(length)) {
+                                length = 10;
+                            }
+                            if(end === undefined) {
+                                end = " ..."
+                            }
+                            if(text.length <= length) {
+                                return text;
+                            } else {
+                                return String(text).substring(0, length) + end;
+                            }
+                        }
+                    }
+                })
+                .filter('maioridade', function () {
+                    return function (idade) {
+                        if(idade) {return idade >= 18};
+                    }
+                })
+                .controller('UserController', UserController)
+                .controller('CourseController', CourseController);
+
+        function UserController() {
+            var vm = this;
+            vm.titulo = "Meu Controller - Lista";
+            vm.users = [
+                {nome: "Nattan", idade: 25},
+                {nome: "João", idade: 26}
+            ]
+        };
+
+        function CourseController() {
+            var vm = this;
+            vm.titulo = "Cursos";
+            vm.courses = [
+                {teacher: "Nattan", curso : "Matemática"},
+                {teacher: "João", curso: "História"}
+            ]
+        };
+
+
+    </script>
+</body>
+</html>

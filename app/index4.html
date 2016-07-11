@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" data-ng-app="BeMEAN">
+<head>
+    <meta charset="UTF-8">
+    <title>{{titulo}}</title>
+</head>
+<body >
+    <div data-ng-controller="UserController as User">
+        <h1>{{User.titulo}}</h1>
+        <label>Busca: <input ng-model="search" /></label>
+        <p>
+            <label>Nome: <input type="text" data-ng-model="form.User.nome"></label>
+            <br><br>
+            <label>Idade: <input type="text" data-ng-model="form.User.idade"></label>
+
+        </p>
+        <button data-ng-click="User.add(form.User)">Adicionar</button>
+        <br/>
+
+        <table>
+            <thead>
+                <tr>
+                    <th data-ng-repeat="(key, value) in User.users[0]"> {{key}} </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-ng-repeat="user in User.users | orderBy:'nome' | filter:search">
+                    <td data-ng-repeat="(key, value) in user"> {{value}} </td>
+                </tr>
+            </tbody>
+        </table>
+   </div>
+    <script src="libs/angular.min.js"></script>
+    <script>
+        //o primeiro parâmetro é o ng-app e o segundo são as dependências
+        angular.module('BeMEAN', [])
+                .controller('UserController', UserController);
+        function UserController() {
+            var vm = this;
+            vm.titulo = "Usuários";
+            vm.users = [
+                {nome: "Nattan", idade: 25},
+                {nome: "João", idade: 26},
+                {nome: "Bruna", idade:25},
+                {nome: "Bruno", idade:17},
+                {nome: "César", idade:26}
+            ];
+
+            vm.add = add;
+            function add(user) {
+                console.log(user);
+                vm.users.push({nome: user.nome, idade: user.idade });
+            }
+        };
+    </script>
+</body>
+</html>
